@@ -1,0 +1,15 @@
+!.vscode/launch.json
+*.egg-info
+*.log
+*.pyc
+./config.conf
+.DS_Store
+.coverage
+.idea/
+.tmp/
+.vscode/*
+auth.conf
+build/
+config.conf
+coverage/
+secrets/
