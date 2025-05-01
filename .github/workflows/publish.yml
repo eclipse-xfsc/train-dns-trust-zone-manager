@@ -6,15 +6,29 @@ on:
   workflow_dispatch:
   
 jobs:
-  dockerbuild:
+  dockerbuild-nsd:
     uses: eclipse-xfsc/dev-ops/.github/workflows/dockerbuild.yml@main
     secrets: inherit
     with: 
       harbor_config: "deployment/harbor.config"
       repo_name: dns-zone-manager-nsd
-  helm:
+  helm-nsd:
     uses: eclipse-xfsc/dev-ops/.github/workflows/helm.yml@main
     secrets: inherit
     with: 
-      buildContext:  "deployment/helm"
+      buildContext:  "deployment/helm/nsd"
+      harbor_config: "deployment/harbor.config"
+  dockerbuild-ui:
+    uses: eclipse-xfsc/dev-ops/.github/workflows/dockerbuild.yml@main
+    secrets: inherit
+    with: 
+      dockerfile: ui/Dockerfile
+      buildContext: ui
+      harbor_config: "deployment/harbor.config"
+      repo_name: dns-zone-manager-ui
+  helm-ui:
+    uses: eclipse-xfsc/dev-ops/.github/workflows/helm.yml@main
+    secrets: inherit
+    with: 
+      buildContext:  "deployment/helm/ui"
       harbor_config: "deployment/harbor.config"
