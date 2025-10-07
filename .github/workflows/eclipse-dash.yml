@@ -1,4 +1,4 @@
-name: Call Eclipse Dash License Scanner (Go)
+name: Call Eclipse Dash License Scanner (Python)
 
 on:
   workflow_dispatch:
@@ -11,3 +11,5 @@ jobs:
   call-remote-dash-workflow:
     secrets: inherit
     uses: eclipse-xfsc/dev-ops/.github/workflows/eclipse-dash-licence-python.yml@main
+    with:
+      requirements_path: requirements.txt
