@@ -38,9 +38,9 @@ services:
     hostname: keycloak
     ports:
       - "8002:8002"
+    env_file:
+      - ./keycloak.env
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=devpassword
       - KC_HOSTNAME=keycloak
       - KC_HOSTNAME_PORT=8002
       - KC_HOSTNAME_STRICT=false
