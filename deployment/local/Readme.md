@@ -3,6 +3,8 @@ We are using docker compose and a custom shell script to startup both components
 
 ## Prerequisites:
 - docker version that already includes "compose"
+- Add `127.0.0.1 keycloak` to your `/etc/hosts` file so the host can resolve the Keycloak container.
+
 
 ## How to run:
 run the deploy.sh script with a normal shell. zsh has been tested, but bash and others should also work. Example:

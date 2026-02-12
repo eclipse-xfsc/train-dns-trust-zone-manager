@@ -1,10 +1,10 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT")
 ROOT_PATH=$(dirname $(dirname "$SCRIPT_PATH"))
-DEPLOY_PATH="$ROOT_PATH/deploy/local"
+DEPLOY_PATH="$ROOT_PATH/deployment/local"
 
 # build dns docker image
-if [ $1 = "build" ]; then
+if [ "$1" = "build" ]; then
   echo "Switching context to dns building... ($ROOT_PATH)"
   cd "$ROOT_PATH"
   docker build -t tdzm-nsd:latest .
