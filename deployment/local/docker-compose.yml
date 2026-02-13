@@ -5,8 +5,8 @@ services:
     container_name: tdzm
     hostname: tdzm
     ports:
-#      - "53:53" # dns tcp
-#      - "53:53/udp" # dns udp
+      #      - "53:53" # dns tcp
+      #      - "53:53/udp" # dns udp
       - "16001:16001" # Backend api port.
     volumes:
       - zonedata:/var/lib/zonemgr
@@ -23,17 +23,50 @@ services:
     ports:
       - "8001:80"
     networks:
-      - tdzm-network
+      tdzm-network:
+        ipv4_address: 172.29.0.3
     env_file:
       - ./ui-local.env
 
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    hostname: keycloak
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./keycloak.env
+    environment:
+      - KC_HOSTNAME=keycloak
+      - KC_HOSTNAME_PORT=8002
+      - KC_HOSTNAME_STRICT=false
+      - KC_HEALTH_ENABLED=true
+      - KC_HTTP_PORT=8002
+    extra_hosts:
+      - "keycloak:host-gateway"
+    volumes:
+      - ../../ui/dev_infra/realm/gxfs-dev-test.json:/opt/keycloak/data/import/realm.json
+    command: [ "start-dev", "--import-realm" ]
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/9000; echo -e \"GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n\" >&3; cat <&3 | grep \"HTTP/1.1 200 OK\"" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      tdzm-network:
+        ipv4_address: 172.29.0.4
 networks:
   tdzm-network:
     external: false
     name: tdzm-network
     ipam:
       config:
-        - subnet: 172.29.0.1/16
+        - subnet: 172.29.0.0/16
 
 volumes:
   zonedata:
