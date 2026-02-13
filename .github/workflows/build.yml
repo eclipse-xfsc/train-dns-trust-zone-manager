@@ -50,7 +50,7 @@ jobs:
           npm ci --cache ../.npm --prefer-offline
           npm run test
       - name: Upload Test Coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: cobertura-coverage
           path: ui/coverage/cobertura-coverage.xml
@@ -65,7 +65,7 @@ jobs:
           npm ci --cache ../.npm --prefer-offline
           npm run build
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ui-dist
           path: ui/dist/
@@ -80,7 +80,7 @@ jobs:
           npm ci --cache ../.npm --prefer-offline
           npm run license:scan
       - name: Upload License File
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: third-party-licenses
           path: ui/THIRD-PARTY.txt
