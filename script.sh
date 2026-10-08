@@ -146,6 +146,11 @@ include: /var/lib/zonemgr/nsd.zones.conf
 EOF
 mv /tmp/zonemgr.conf /etc/nsd/nsd.conf.d/zonemgr.conf
 
+# NSD has been running since the top of this script, from before this include existed, and
+# `service nsd start` below does nothing to a running daemon: tell it to read the zone list now.
+# Without this NSD serves no zone until the next write through the API triggers a reconfig.
+nsd-control reconfig && nsd-control reload
+
 service nsd start
 echo
 service nsd status
