@@ -1,1 +1,5 @@
-5 0 * * * /usr/lib/zonemgr/zonemanager.py --database sqlite:////var/lib/zonemgr/zones.db resign
+# Nightly DNSSEC re-signing. Installed for root by script.sh on every start: the database and the
+# zone files are written by the service, which runs as root, and nsd-control needs root's control
+# keys. cron does not inherit the image environment, so the path to the ldns binding is set here.
+PYTHONPATH=/usr/lib/python3/dist-packages
+5 0 * * * /usr/local/bin/dns-zone-manager-server --database sqlite:////var/lib/zonemgr/zones.db resign

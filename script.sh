@@ -121,12 +121,6 @@ if [ ! -f "${VAR_PATH}zones.db" ]; then
       --apex "$TF_DOMAIN_NAME" \
         "$SECONDARY_SERVER_2_NSD" A "$SECONDARY_SERVER_2_IP"
 
-  echo
-  echo "[INFO] Adding cron job for resigning..."
-
-  # Install the DNSSEC resigning cronjob:
-  crontab -u zonemgr "$ZM_PATH"etc/crontab
-
 else
   echo "A zone DB file was found. Zone manager reload"
 fi
@@ -149,6 +143,12 @@ mv /tmp/zonemgr.conf /etc/nsd/nsd.conf.d/zonemgr.conf
 service nsd start
 echo
 service nsd status
+
+echo
+echo "[INFO] Installing the DNSSEC re-signing cron job and starting cron..."
+# For root, on every start (a restart gets a fresh container), with the real entry point; see etc/crontab.
+crontab "$ZM_PATH"etc/crontab
+service cron start
 
 echo
 echo "[INFO] Starting the Zone Manager service in port ${SERVER_PORT} ..."
